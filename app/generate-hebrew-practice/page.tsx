@@ -100,7 +100,7 @@ export default function GenerateHebrewPracticePage() {
           <CardContent>
             {isLoading && <Loader2 className="h-8 w-8 animate-spin mx-auto" />}
             {practiceSheet && (
-              <div className="space-y-4">
+              <div className="space-y-4 text-3xl">
                 <div>
                   <strong>Letters:</strong> {practiceSheet.letters}
                 </div>
