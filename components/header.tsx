@@ -1,6 +1,6 @@
 import { GraduationCap } from "lucide-react";
 import Link from "next/link";
-
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 const Header = () => {
   return (
     <header className="border-b">
@@ -45,6 +45,14 @@ const Header = () => {
             </li>
           </ul>
         </nav>
+        <div>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+        </div>
       </div>
     </header>
   );
