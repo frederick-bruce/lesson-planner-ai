@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <ConvexClerkProvider>
       <html lang="en">
-        <body className="flex flex-col min-h-screen h-full justify-between">
+        <body className="container mx-auto flex flex-col h-screen">
           <Header />
           <main className="flex-1">{children}</main>
           <Toaster />
