@@ -1,62 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, Download } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Loader2 } from "lucide-react";
 import { PracticeSheetModal } from "@/components/practice-sheet-modal";
-interface PracticeSheet {
-  letters: string;
-  vowels: string;
-  vowelNames: string;
-  practice: string[];
-  answerKey: string[];
-}
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useHebrewPracticeSheet } from "@/hooks/use-hebrew-practice-sheet";
+import { PracticeSheetDisplay } from "@/components/practice-sheet-display";
 
 export default function GenerateHebrewPracticePage() {
-  const [letterCount, setLetterCount] = useState(3);
-  const [vowelCount, setVowelCount] = useState(2);
-  const [isLoading, setIsLoading] = useState(false);
-  const [practiceSheet, setPracticeSheet] = useState<PracticeSheet | null>(
-    null
-  );
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    letterCount,
+    vowelCount,
+    isLoading,
+    practiceSheet,
+    error,
+    setLetterCount,
+    setVowelCount,
+    handleGenerate,
+  } = useHebrewPracticeSheet();
 
-  async function handleGenerate() {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `/api/generate-hebrew-practice?letters=${letterCount}&vowels=${vowelCount}`
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch practice sheet");
-      }
-      const data = await response.json();
-      setPracticeSheet(data);
-    } catch (error) {
-      console.error("Failed to generate practice sheet:", error);
-      // You might want to show an error message to the user here
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold text-center mb-8">
+    <div className="container mx-auto px-4 py-8 md:py-16">
+      <h1 className="text-3xl md:text-4xl font-bold text-center mb-8">
         Generate Hebrew Practice Sheet
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <Card className="w-full">
           <CardHeader>
-            <CardTitle>Practice Sheet Parameters</CardTitle>
+            <CardTitle className="text-xl md:text-2xl">
+              Practice Sheet Parameters
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="letterCount">Number of Letters</Label>
+              <Label htmlFor="letterCount" className="text-sm font-medium">
+                Number of Letters
+              </Label>
               <Input
                 id="letterCount"
                 type="number"
@@ -64,10 +49,17 @@ export default function GenerateHebrewPracticePage() {
                 max={22}
                 value={letterCount}
                 onChange={(e) => setLetterCount(Number(e.target.value))}
+                className="w-full"
+                aria-describedby="letterCountHint"
               />
+              <p id="letterCountHint" className="text-sm text-muted-foreground">
+                Choose between 1 and 22 letters
+              </p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vowelCount">Number of Vowels</Label>
+              <Label htmlFor="vowelCount" className="text-sm font-medium">
+                Number of Vowels
+              </Label>
               <Input
                 id="vowelCount"
                 type="number"
@@ -75,7 +67,12 @@ export default function GenerateHebrewPracticePage() {
                 max={8}
                 value={vowelCount}
                 onChange={(e) => setVowelCount(Number(e.target.value))}
+                className="w-full"
+                aria-describedby="vowelCountHint"
               />
+              <p id="vowelCountHint" className="text-sm text-muted-foreground">
+                Choose between 1 and 8 vowels
+              </p>
             </div>
             <Button
               onClick={handleGenerate}
@@ -93,87 +90,39 @@ export default function GenerateHebrewPracticePage() {
             </Button>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="w-full">
           <CardHeader>
-            <CardTitle>Generated Practice Sheet</CardTitle>
+            <CardTitle className="text-xl md:text-2xl">
+              Generated Practice Sheet
+            </CardTitle>
           </CardHeader>
           <CardContent>
-            {isLoading && <Loader2 className="h-8 w-8 animate-spin mx-auto" />}
-            {practiceSheet && (
-              <div className="space-y-4 text-3xl">
-                <div>
-                  <strong>Letters:</strong> {practiceSheet.letters}
-                </div>
-                <div>
-                  <strong>Vowels:</strong> {practiceSheet.vowels}
-                </div>
-                <div>
-                  <strong>Vowel Names:</strong> {practiceSheet.vowelNames}
-                </div>
-                <Tabs defaultValue="practice" className="w-full">
-                  <TabsList>
-                    <TabsTrigger value="practice">Practice</TabsTrigger>
-                    <TabsTrigger value="answer">Answer Key</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="practice">
-                    <ol className="list-decimal list-inside space-y-4">
-                      {practiceSheet.practice.map((line, index) => (
-                        <li key={index} className="font-bold text-xl">
-                          <span className="font-normal text-base mr-2">
-                            {index === 0
-                              ? "Single characters:"
-                              : index === 1
-                              ? "Two-letter combinations:"
-                              : index === 2
-                              ? "Three-letter combinations:"
-                              : index === 3
-                              ? "Four-letter combinations:"
-                              : index === 4
-                              ? "Five-letter combinations:"
-                              : "Six-letter combinations:"}
-                          </span>
-                          <span className="font-mono">{line}</span>
-                        </li>
-                      ))}
-                    </ol>
-                  </TabsContent>
-                  <TabsContent value="answer">
-                    <ol className="list-decimal list-inside space-y-4">
-                      {practiceSheet.answerKey.map((line, index) => (
-                        <li key={index}>
-                          <span className="font-normal text-base mr-2">
-                            {index === 0
-                              ? "Single characters:"
-                              : index === 1
-                              ? "Two-letter combinations:"
-                              : index === 2
-                              ? "Three-letter combinations:"
-                              : index === 3
-                              ? "Four-letter combinations:"
-                              : index === 4
-                              ? "Five-letter combinations:"
-                              : "Six-letter combinations:"}
-                          </span>
-                          <span className="font-mono">{line}</span>
-                        </li>
-                      ))}
-                    </ol>
-                  </TabsContent>
-                </Tabs>
-                <Button onClick={() => setIsModalOpen(true)} className="w-full">
-                  <Download className="mr-2 h-4 w-4" />
-                  View and Download
-                </Button>
+            {isLoading && (
+              <div className="flex justify-center items-center h-64">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>
+            )}
+            {error && (
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            {practiceSheet && (
+              <PracticeSheetDisplay
+                practiceSheet={practiceSheet}
+                onViewDownload={() => setIsModalOpen(true)}
+              />
             )}
           </CardContent>
         </Card>
       </div>
-      <PracticeSheetModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        practiceSheet={practiceSheet}
-      />
+      {practiceSheet && (
+        <PracticeSheetModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          practiceSheet={practiceSheet}
+        />
+      )}
     </div>
   );
 }
