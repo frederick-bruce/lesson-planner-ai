@@ -1,5 +1,8 @@
+// convex/lessonPlans.ts
+
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { LessonPlan, LessonPlanId, UserId } from "./types";
 
 export const create = mutation({
   args: {
@@ -12,39 +15,50 @@ export const create = mutation({
     materials: v.array(v.string()),
     isPublic: v.boolean(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<LessonPlanId> => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error("Not authenticated");
     }
-    const userId = await ctx.db
+    const user = await ctx.db
       .query("users")
       .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
       .unique();
-    if (!userId) {
+    if (!user) {
       throw new Error("User not found");
     }
     return await ctx.db.insert("lessonPlans", {
       ...args,
-      createdBy: userId._id,
+      createdBy: user._id as UserId,
     });
   },
 });
 
 export const getById = query({
   args: { id: v.id("lessonPlans") },
-  handler: async (ctx, args) => {
-    return await ctx.db.get(args.id);
+  handler: async (ctx, args): Promise<LessonPlan | null> => {
+    return await ctx.db.get(args.id as LessonPlanId);
   },
 });
 
 export const getByUser = query({
-  args: { userId: v.id("users") },
-  handler: async (ctx, args) => {
+  handler: async (ctx): Promise<LessonPlan[]> => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+    if (!user) {
+      throw new Error("User not found");
+    }
     return await ctx.db
       .query("lessonPlans")
-      .withIndex("by_created_by", (q) => q.eq("createdBy", args.userId))
-      .collect();
+      .withIndex("by_created_by", (q) => q.eq("createdBy", user._id as UserId))
+      .order("desc")
+      .take(100);
   },
 });
 
@@ -60,15 +74,16 @@ export const update = mutation({
     materials: v.optional(v.array(v.string())),
     isPublic: v.optional(v.boolean()),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<LessonPlanId> => {
     const { id, ...updates } = args;
-    return await ctx.db.patch(id, updates);
+    await ctx.db.patch(id as LessonPlanId, updates);
+    return id as LessonPlanId;
   },
 });
 
 export const remove = mutation({
   args: { id: v.id("lessonPlans") },
-  handler: async (ctx, args) => {
-    return await ctx.db.delete(args.id);
+  handler: async (ctx, args): Promise<void> => {
+    await ctx.db.delete(args.id as LessonPlanId);
   },
 });

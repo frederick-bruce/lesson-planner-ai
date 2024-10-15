@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { Activity, ActivityId, LessonPlanId } from "@/types";
 
 export const create = mutation({
   args: {
@@ -9,18 +10,18 @@ export const create = mutation({
     duration: v.number(),
     order: v.number(),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<ActivityId> => {
     return await ctx.db.insert("activities", args);
   },
 });
 
 export const getByLessonPlan = query({
   args: { lessonPlanId: v.id("lessonPlans") },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<Activity[]> => {
     return await ctx.db
       .query("activities")
       .withIndex("by_lesson_plan", (q) =>
-        q.eq("lessonPlanId", args.lessonPlanId)
+        q.eq("lessonPlanId", args.lessonPlanId as LessonPlanId)
       )
       .collect();
   },
@@ -34,15 +35,16 @@ export const update = mutation({
     duration: v.optional(v.number()),
     order: v.optional(v.number()),
   },
-  handler: async (ctx, args) => {
+  handler: async (ctx, args): Promise<ActivityId> => {
     const { id, ...updates } = args;
-    return await ctx.db.patch(id, updates);
+    await ctx.db.patch(id as ActivityId, updates);
+    return id as ActivityId;
   },
 });
 
 export const remove = mutation({
   args: { id: v.id("activities") },
-  handler: async (ctx, args) => {
-    return await ctx.db.delete(args.id);
+  handler: async (ctx, args): Promise<void> => {
+    await ctx.db.delete(args.id as ActivityId);
   },
 });
