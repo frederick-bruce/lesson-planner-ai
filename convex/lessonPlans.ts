@@ -87,3 +87,36 @@ export const remove = mutation({
     await ctx.db.delete(args.id as LessonPlanId);
   },
 });
+
+export const getRecentLessonPlans = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+      .unique();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const lessonPlans = await ctx.db
+      .query("lessonPlans")
+      .withIndex("by_created_by", (q) => q.eq("createdBy", user._id))
+      .order("desc")
+      .take(args.limit || 5);
+
+    return lessonPlans.map((lessonPlan) => ({
+      _id: lessonPlan._id,
+      title: lessonPlan.title,
+      subject: lessonPlan.subject,
+      gradeLevel: lessonPlan.gradeLevel,
+      createdAt: lessonPlan._creationTime,
+    }));
+  },
+});

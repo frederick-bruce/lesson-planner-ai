@@ -53,4 +53,42 @@ export default defineSchema({
   })
     .index("by_lesson_plan", ["lessonPlanId"])
     .index("by_tag", ["tagId"]),
+  worksheets: defineTable({
+    title: v.string(),
+    subject: v.string(),
+    gradeLevel: v.string(),
+    content: v.string(),
+    isPublic: v.boolean(),
+    createdBy: v.id("users"),
+    parameters: v.array(
+      v.object({
+        name: v.string(),
+        label: v.string(),
+        type: v.string(),
+        value: v.union(v.string(), v.number()),
+      })
+    ),
+  })
+    .index("by_created_by", ["createdBy"])
+    .index("by_subject", ["subject"])
+    .searchIndex("search_title", {
+      searchField: "title",
+    })
+    .searchIndex("search_subject", {
+      searchField: "subject",
+    }),
+  worksheetTemplates: defineTable({
+    name: v.string(),
+    subject: v.string(),
+    parameters: v.array(
+      v.object({
+        name: v.string(),
+        label: v.string(),
+        type: v.string(),
+        options: v.optional(v.array(v.string())),
+        min: v.optional(v.number()),
+        max: v.optional(v.number()),
+      })
+    ),
+  }).index("by_subject", ["subject"]),
 });

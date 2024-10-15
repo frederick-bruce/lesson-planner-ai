@@ -24,6 +24,7 @@ import type * as lessonPlanTags from "../lessonPlanTags.js";
 import type * as tags from "../tags.js";
 import type * as types from "../types.js";
 import type * as users from "../users.js";
+import type * as worksheets from "../worksheets.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -43,6 +44,7 @@ declare const fullApi: ApiFromModules<{
   tags: typeof tags;
   types: typeof types;
   users: typeof users;
+  worksheets: typeof worksheets;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

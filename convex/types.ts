@@ -7,6 +7,8 @@ export type ActivityId = Id<"activities">;
 export type AssessmentId = Id<"assessments">;
 export type CommentId = Id<"comments">;
 export type TagId = Id<"tags">;
+export type WorksheetId = Id<"worksheets">;
+export type WorksheetTemplateId = Id<"worksheetTemplates">;
 
 // Document types
 export interface User {
@@ -68,4 +70,52 @@ export interface LessonPlanTag {
   tagId: TagId;
 }
 
-// You can add more types as needed for your Convex functions
+export interface Worksheet {
+  _id: WorksheetId;
+  title: string;
+  subject: string;
+  gradeLevel: string;
+  isPublic: boolean;
+  createdBy: UserId;
+  parameters: WorksheetParameter[];
+  content: string;
+  _creationTime: number;
+}
+
+export interface WorksheetTemplate {
+  _id: WorksheetTemplateId;
+  name: string;
+  subject: string;
+  parameters: WorksheetTemplateParameter[];
+  _creationTime: number;
+}
+
+// Parameter types
+export interface WorksheetParameter {
+  name: string;
+  label: string;
+  type: string;
+  value: string | number;
+}
+
+export interface WorksheetTemplateParameter {
+  name: string;
+  label: string;
+  type: string;
+  options?: string[];
+  min?: number;
+  max?: number;
+}
+
+// Additional types for the WorksheetCreator component
+export interface Parameter {
+  name: string;
+  label: string;
+  type: string;
+  options?: string[];
+  min?: number;
+  max?: number;
+  value?: string | number;
+}
+
+// You can add more types as needed for your Convex functions or components
