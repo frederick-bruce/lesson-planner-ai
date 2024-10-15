@@ -19,6 +19,7 @@ export interface User {
 
 export interface LessonPlan {
   _id: LessonPlanId;
+  _creationTime: number;
   title: string;
   description: string;
   subject: string;
@@ -59,4 +60,3 @@ export interface Tag {
   _id: TagId;
   name: string;
 }
-

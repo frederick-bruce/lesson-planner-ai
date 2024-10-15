@@ -19,6 +19,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FileText, HelpCircle, PlusCircle, Settings } from "lucide-react";
 import Loading from "@/components/loading";
+import { LessonPlan } from "@/convex/types";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -176,7 +177,7 @@ function RecentPlans() {
 
   return (
     <>
-      {lessonPlans.slice(0, 3).map((plan) => (
+      {lessonPlans.slice(0, 3).map((plan: LessonPlan) => (
         <Card key={plan._id}>
           <CardHeader>
             <CardTitle>{plan.title}</CardTitle>

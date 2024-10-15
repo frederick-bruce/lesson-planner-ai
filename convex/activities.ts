@@ -1,6 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { Activity, ActivityId, LessonPlanId } from "@/types";
+import { Activity, ActivityId, LessonPlanId } from "./types";
 
 export const create = mutation({
   args: {

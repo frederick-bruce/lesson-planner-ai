@@ -28,6 +28,7 @@ export interface LessonPlan {
   materials: string[];
   createdBy: UserId;
   isPublic: boolean;
+  _creationTime: number;
 }
 
 export interface Activity {
