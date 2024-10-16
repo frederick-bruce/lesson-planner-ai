@@ -118,4 +118,44 @@ export interface Parameter {
   value?: string | number;
 }
 
-// You can add more types as needed for your Convex functions or components
+// WorksheetSummary type for use in list views
+export interface WorksheetSummary {
+  _id: WorksheetId;
+  title: string;
+  subject: string;
+  gradeLevel: string;
+  createdAt: number;
+  isPublic: boolean;
+  createdBy: UserId;
+}
+
+// LessonPlanSummary type for use in list views
+export interface LessonPlanSummary {
+  _id: LessonPlanId;
+  title: string;
+  subject: string;
+  gradeLevel: string;
+  duration: number;
+  createdAt: number;
+  isPublic: boolean;
+  createdBy: UserId;
+}
+
+// UserProfile type for use in profile views
+export interface UserProfile {
+  _id: UserId;
+  name: string;
+  email: string;
+  imageUrl: string;
+  createdAt: number;
+}
+
+// SearchResult type for unified search results
+export interface SearchResult {
+  type: "worksheet" | "lessonPlan";
+  _id: WorksheetId | LessonPlanId;
+  title: string;
+  subject: string;
+  gradeLevel: string;
+  createdAt: number;
+}

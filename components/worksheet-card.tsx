@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   Card,
   CardContent,
@@ -7,12 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
-import { Worksheet } from "@/convex/types";
+import Link from "next/link";
+import { WorksheetSummary } from "@/types";
 
 interface WorksheetCardProps {
-  worksheet: Worksheet;
+  worksheet: WorksheetSummary;
 }
 
 export function WorksheetCard({ worksheet }: WorksheetCardProps) {
@@ -26,12 +25,18 @@ export function WorksheetCard({ worksheet }: WorksheetCardProps) {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-gray-500">
-          {worksheet.content.substring(0, 100)}...
+          Created on: {new Date(worksheet.createdAt).toLocaleDateString()}
+        </p>
+        <p className="text-sm text-gray-500">
+          Visibility: {worksheet.isPublic ? "Public" : "Private"}
         </p>
       </CardContent>
-      <CardFooter>
+      <CardFooter className="flex justify-between">
         <Link href={`/worksheets/${worksheet._id}`} passHref>
-          <Button variant="outline">View Worksheet</Button>
+          <Button variant="outline">View</Button>
+        </Link>
+        <Link href={`/worksheets/${worksheet._id}/edit`} passHref>
+          <Button>Edit</Button>
         </Link>
       </CardFooter>
     </Card>

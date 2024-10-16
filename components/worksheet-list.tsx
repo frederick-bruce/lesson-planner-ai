@@ -1,7 +1,28 @@
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Skeleton } from "./skeleton";
 import { WorksheetCard } from "./worksheet-card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Id } from "@/convex/_generated/dataModel";
+import { Skeleton } from "./skeleton";
+
+interface WorksheetQueryResult {
+  _id: Id<"worksheets">;
+  title: string;
+  subject: string;
+  gradeLevel: string;
+  createdAt: number;
+}
+
+export interface WorksheetSummary {
+  _id: Id<"worksheets">;
+  title: string;
+  subject: string;
+  gradeLevel: string;
+  createdAt: number;
+  isPublic: boolean;
+  createdBy: Id<"users">;
+}
 
 export function WorksheetList() {
   const worksheets = useQuery(api.worksheets.getRecentWorksheets, {
@@ -20,27 +41,35 @@ export function WorksheetList() {
 
   if (worksheets.length === 0) {
     return (
-      <p className="text-center text-gray-500">
-        No worksheets found. Create your first one!
-      </p>
+      <div className="text-center">
+        <p className="text-gray-500 mb-4">No worksheets found.</p>
+        <Link href="/worksheets/new" passHref>
+          <Button>Create Your First Worksheet</Button>
+        </Link>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-4">
-      {worksheets.map((worksheet) => (
-        <WorksheetCard
-          key={worksheet._id}
-          worksheet={{
-            ...worksheet,
-            isPublic: true,
-            createdBy: {},
-            parameters: {},
-            content: "",
-            _creationTime: worksheet.createdAt,
-          }}
-        />
-      ))}
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">Your Worksheets</h2>
+        <Link href="/worksheets/new" passHref>
+          <Button>Create New Worksheet</Button>
+        </Link>
+      </div>
+      <div className="space-y-4">
+        {worksheets.map((worksheet: WorksheetQueryResult) => (
+          <WorksheetCard
+            key={worksheet._id}
+            worksheet={{
+              ...worksheet,
+              isPublic: false,
+              createdBy: "unknown" as Id<"users">,
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 }

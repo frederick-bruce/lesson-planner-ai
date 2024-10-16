@@ -19,7 +19,15 @@ export default defineSchema({
     materials: v.array(v.string()),
     createdBy: v.id("users"),
     isPublic: v.boolean(),
-  }).index("by_created_by", ["createdBy"]),
+  })
+    .index("by_created_by", ["createdBy"])
+    .index("by_subject", ["subject"])
+    .searchIndex("search_title", {
+      searchField: "title",
+    })
+    .searchIndex("search_subject", {
+      searchField: "subject",
+    }),
 
   activities: defineTable({
     lessonPlanId: v.id("lessonPlans"),
@@ -41,7 +49,9 @@ export default defineSchema({
     userId: v.id("users"),
     content: v.string(),
     createdAt: v.number(),
-  }).index("by_lesson_plan", ["lessonPlanId"]),
+  })
+    .index("by_lesson_plan", ["lessonPlanId"])
+    .index("by_user", ["userId"]),
 
   tags: defineTable({
     name: v.string(),
@@ -53,6 +63,7 @@ export default defineSchema({
   })
     .index("by_lesson_plan", ["lessonPlanId"])
     .index("by_tag", ["tagId"]),
+
   worksheets: defineTable({
     title: v.string(),
     subject: v.string(),
@@ -77,6 +88,7 @@ export default defineSchema({
     .searchIndex("search_subject", {
       searchField: "subject",
     }),
+
   worksheetTemplates: defineTable({
     name: v.string(),
     subject: v.string(),
@@ -90,5 +102,9 @@ export default defineSchema({
         max: v.optional(v.number()),
       })
     ),
-  }).index("by_subject", ["subject"]),
+  })
+    .index("by_subject", ["subject"])
+    .searchIndex("search_name", {
+      searchField: "name",
+    }),
 });
