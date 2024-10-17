@@ -1,6 +1,9 @@
+import { Id } from "@/convex/_generated/dataModel";
 import { useState, useCallback } from "react";
 
 export interface PracticeSheet {
+  _id: Id<"hebrewPracticeSheets">;
+  createdAt: string | number | Date;
   letters: string;
   vowels: string;
   vowelNames: string;
