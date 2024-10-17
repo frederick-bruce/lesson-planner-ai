@@ -17,7 +17,7 @@ import Link from "next/link";
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
+    <div className="w-full">
       <div className="container mx-auto px-4 py-16">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">Dashboard</h1>
@@ -60,10 +60,6 @@ export default function DashboardPage() {
               <CardDescription>Get started quickly</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col space-y-2">
-              <Button variant="outline" className="w-full justify-start">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                New Lesson Plan
-              </Button>
               <Button variant="outline" className="w-full justify-start">
                 <Link
                   href="/generate-hebrew-practice"
