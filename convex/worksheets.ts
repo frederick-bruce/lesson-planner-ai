@@ -4,6 +4,17 @@ import { Id } from "./_generated/dataModel";
 import { WorksheetTemplate } from "./types";
 import OpenAI from "openai";
 
+export const getWorksheet = query({
+  args: { id: v.id("worksheets") },
+  handler: async (ctx, args) => {
+    const worksheet = await ctx.db.get(args.id);
+    if (!worksheet) {
+      return null;
+    }
+    return worksheet;
+  },
+});
+
 export const createWorksheet = mutation({
   args: {
     title: v.string(),
@@ -220,4 +231,3 @@ export const getRecentWorksheets = query({
     }));
   },
 });
-

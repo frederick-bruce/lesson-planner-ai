@@ -1,3 +1,5 @@
+"use client"
+
 import { Button } from "@/components/ui/button";
 import { WorksheetList } from "@/components/worksheet-list";
 import Link from "next/link";
