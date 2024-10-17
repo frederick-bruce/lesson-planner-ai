@@ -17,7 +17,9 @@ import type {
 } from "convex/server";
 import type * as hebrewPracticeSheets from "../hebrewPracticeSheets.js";
 import type * as http from "../http.js";
+import type * as types from "../types.js";
 import type * as users from "../users.js";
+import type * as worksheets from "../worksheets.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -30,7 +32,9 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   hebrewPracticeSheets: typeof hebrewPracticeSheets;
   http: typeof http;
+  types: typeof types;
   users: typeof users;
+  worksheets: typeof worksheets;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
