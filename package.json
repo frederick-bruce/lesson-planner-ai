@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/clerk-sdk-node": "github:clerk/clerk-sdk-node",
     "@clerk/nextjs": "^5.6.4",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -21,6 +22,8 @@
     "@radix-ui/react-switch": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
+    "@stripe/react-stripe-js": "^2.8.1",
+    "@stripe/stripe-js": "^4.8.0",
     "@types/html2canvas": "^0.5.35",
     "@types/pdfjs-dist": "^2.10.377",
     "class-variance-authority": "^0.7.0",
@@ -36,7 +39,8 @@
     "react": "^18",
     "react-dom": "^18",
     "sonner": "^1.5.0",
-    "svix": "^1.36.0",
+    "stripe": "^17.2.0",
+    "svix": "^1.37.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"

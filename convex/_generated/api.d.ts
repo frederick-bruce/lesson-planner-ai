@@ -15,11 +15,12 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as clerk from "../clerk.js";
 import type * as hebrewPracticeSheets from "../hebrewPracticeSheets.js";
 import type * as http from "../http.js";
+import type * as stripe from "../stripe.js";
 import type * as types from "../types.js";
 import type * as users from "../users.js";
-import type * as worksheets from "../worksheets.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -30,11 +31,12 @@ import type * as worksheets from "../worksheets.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  clerk: typeof clerk;
   hebrewPracticeSheets: typeof hebrewPracticeSheets;
   http: typeof http;
+  stripe: typeof stripe;
   types: typeof types;
   users: typeof users;
-  worksheets: typeof worksheets;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
