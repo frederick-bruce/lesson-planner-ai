@@ -23,7 +23,9 @@ export default function WelcomeCard({
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="text-2xl">Welcome back, {userName}!</CardTitle>
-        <CardDescription>Here's what's new with Lesson Plan AI</CardDescription>
+        <CardDescription>
+          Here&apos;s what&apos;s new with Lesson Plan AI
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <ul className="list-disc pl-5 space-y-2">

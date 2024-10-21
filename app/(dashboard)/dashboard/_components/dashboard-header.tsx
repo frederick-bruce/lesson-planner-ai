@@ -36,7 +36,7 @@ export function DashboardHeader({ user, isLoading }: DashboardHeaderProps) {
               Welcome back, {user.name}!
             </CardDescription>
             <p className="mt-2 text-sm text-muted-foreground">
-              Here's an overview of your recent activity and quick actions.
+              Here&apos;s an overview of your recent activity and quick actions.
             </p>
           </>
         ) : (
