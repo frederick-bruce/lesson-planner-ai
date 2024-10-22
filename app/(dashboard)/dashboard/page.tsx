@@ -1,6 +1,5 @@
 "use client";
 
-import { RecentPracticeSheets } from "@/components/recent-practice-sheets";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -72,8 +71,6 @@ export default function DashboardPage() {
             </CardContent>
           </Card>
         </div>
-
-        <RecentPracticeSheets />
       </div>
     </div>
   );
