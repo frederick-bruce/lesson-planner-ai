@@ -27,22 +27,6 @@ const Header = () => {
                 Plans
               </Link>
             </li>
-            <li>
-              <Link
-                href="/contact"
-                className="text-sm font-medium hover:underline"
-              >
-                Contact
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/dashboard"
-                className="text-sm font-medium hover:underline"
-              >
-                Dashboard
-              </Link>
-            </li>
           </ul>
         </nav>
         <div>

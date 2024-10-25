@@ -1,13 +1,19 @@
+"use client";
 import Banner from "@/components/banner";
+import Dashboard from "@/components/dashboard";
 import Features from "@/components/features";
-import Newsletter from "@/components/newsletter";
+import { Authenticated, Unauthenticated } from "convex/react";
 
 export default function HomePage() {
   return (
-    <main className="flex-grow">
-      <Banner />
-      <Features />
-      <Newsletter />
-    </main>
+    <>
+      <Unauthenticated>
+        <Banner />
+        <Features />
+      </Unauthenticated>
+      <Authenticated>
+        <Dashboard />
+      </Authenticated>
+    </>
   );
 }

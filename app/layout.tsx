@@ -20,7 +20,7 @@ export default function RootLayout({
       <html lang="en">
         <body className="container mx-auto flex flex-col h-screen">
           <Header />
-          <main className="flex-1">{children}</main>
+          {children}
           <Toaster />
           <Footer />
         </body>
