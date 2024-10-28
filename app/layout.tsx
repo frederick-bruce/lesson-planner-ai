@@ -19,10 +19,8 @@ export default function RootLayout({
     <ConvexClerkProvider>
       <html lang="en">
         <body className="container mx-auto flex flex-col h-screen">
-          <Header />
           {children}
           <Toaster />
-          <Footer />
         </body>
       </html>
     </ConvexClerkProvider>
